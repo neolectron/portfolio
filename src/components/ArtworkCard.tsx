@@ -3,12 +3,13 @@ import type { Artwork } from './Masonry';
 
 interface ArtworkCardProps {
   artwork: Artwork;
+  onClick?: () => void;
 }
 
-export function ArtworkCard({ artwork }: ArtworkCardProps) {
+export function ArtworkCard({ artwork, onClick }: ArtworkCardProps) {
   return (
-    <motion.div
-      className="relative rounded-lg overflow-hidden shadow-lg"
+    <motion.button
+      className="relative rounded-sm overflow-hidden shadow-lg cursor-pointer"
       initial={{ opacity: 0, y: 20, scale: 0.95 }}
       whileInView={{
         opacity: 1,
@@ -25,6 +26,8 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
         scale: 1.02,
         transition: { duration: 0.3 },
       }}
+      onClick={onClick}
+      aria-label={`Open modal for ${artwork.title}`}
     >
       <img
         src={artwork.src}
@@ -44,6 +47,6 @@ export function ArtworkCard({ artwork }: ArtworkCardProps) {
           <p className="text-sm text-gray-200">{artwork.description}</p>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.button>
   );
 }

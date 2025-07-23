@@ -1,4 +1,6 @@
 import { ArtworkCard } from './ArtworkCard';
+import Modal from './Modal';
+import React from 'react';
 
 export interface Artwork {
   id: string;
@@ -182,6 +184,7 @@ const ALL_ARTWORKS: Artwork[] = [
 export function Masonry() {
   const columns = 3;
   const columnItems = Array.from({ length: columns }, () => [] as Artwork[]);
+  const [selected, setSelected] = React.useState<Artwork | null>(null);
 
   // split artworks into columns
   ALL_ARTWORKS.forEach((artwork, index) => {
@@ -190,16 +193,29 @@ export function Masonry() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 pb-8">
-      <div className="flex gap-4">
-        {columnItems.map((items, columnIndex) => (
-          <div key={columnIndex} className="flex-1 flex flex-col gap-4">
-            {items.map((artwork) => (
-              <ArtworkCard key={artwork.id} artwork={artwork} />
-            ))}
-          </div>
-        ))}
+    <>
+      <div className="max-w-7xl mx-auto px-4 pb-8">
+        <div className="flex gap-4">
+          {columnItems.map((items, columnIndex) => (
+            <div key={columnIndex} className="flex-1 flex flex-col gap-4">
+              {items.map((artwork) => (
+                <ArtworkCard
+                  key={artwork.id}
+                  artwork={artwork}
+                  onClick={() => setSelected(artwork)}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+      {selected && (
+        <Modal
+          open={!!selected}
+          artwork={selected}
+          onClose={() => setSelected(null)}
+        />
+      )}
+    </>
   );
 }
