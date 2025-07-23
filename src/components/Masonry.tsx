@@ -182,15 +182,53 @@ const ALL_ARTWORKS: Artwork[] = [
 ];
 
 export function Masonry() {
-  const columns = 3;
-  const columnItems = Array.from({ length: columns }, () => [] as Artwork[]);
-  const [selected, setSelected] = React.useState<Artwork | null>(null);
+  // Responsive columns: 1 (sm), 2 (md), 3 (lg+)
+  function useResponsiveColumns(): number {
+    const [columns, setColumns] = React.useState(3);
+    React.useEffect(() => {
+      function updateColumns() {
+        if (window.innerWidth < 640) setColumns(1); // mobile
+        else if (window.innerWidth < 1024) setColumns(2); // tablet
+        else setColumns(3); // desktop
+      }
+      updateColumns();
+      window.addEventListener('resize', updateColumns);
+      return () => window.removeEventListener('resize', updateColumns);
+    }, []);
+    return columns;
+  }
+
+  const columns = useResponsiveColumns();
+  const columnItems: Array<Artwork[]> = Array.from(
+    { length: columns },
+    () => []
+  );
+  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
 
   // split artworks into columns
   ALL_ARTWORKS.forEach((artwork, index) => {
     const columnIndex = index % columns;
     columnItems[columnIndex].push(artwork);
   });
+
+  const handleOpen = (artwork: Artwork) => {
+    const idx = ALL_ARTWORKS.findIndex((a) => a.id === artwork.id);
+    setSelectedIndex(idx === -1 ? 0 : idx);
+  };
+
+  const handleClose = () => setSelectedIndex(null);
+
+  const handlePrev = () =>
+    setSelectedIndex((i) => {
+      if (i === null) return i;
+      return i === 0 ? ALL_ARTWORKS.length - 1 : i - 1;
+    });
+
+  const handleNext = () =>
+    setSelectedIndex((i) => {
+      if (i === null) return i;
+      return i === ALL_ARTWORKS.length - 1 ? 0 : i + 1;
+    });
 
   return (
     <>
@@ -202,18 +240,20 @@ export function Masonry() {
                 <ArtworkCard
                   key={artwork.id}
                   artwork={artwork}
-                  onClick={() => setSelected(artwork)}
+                  onClick={() => handleOpen(artwork)}
                 />
               ))}
             </div>
           ))}
         </div>
       </div>
-      {selected && (
+      {selectedIndex !== null && (
         <Modal
-          open={!!selected}
-          artwork={selected}
-          onClose={() => setSelected(null)}
+          open={selectedIndex !== null}
+          artwork={ALL_ARTWORKS[selectedIndex]}
+          onClose={handleClose}
+          onPrev={handlePrev}
+          onNext={handleNext}
         />
       )}
     </>

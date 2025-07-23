@@ -6,9 +6,17 @@ interface ModalProps {
   open: boolean;
   artwork: Artwork;
   onClose: () => void;
+  onPrev?: () => void;
+  onNext?: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ open, artwork, onClose }) => {
+const Modal: React.FC<ModalProps> = ({
+  open,
+  artwork,
+  onClose,
+  onPrev,
+  onNext,
+}) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   // Close modal on ESC key
@@ -16,6 +24,8 @@ const Modal: React.FC<ModalProps> = ({ open, artwork, onClose }) => {
     if (!open) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft' && onPrev) onPrev();
+      if (e.key === 'ArrowRight' && onNext) onNext();
     };
     window.addEventListener('keydown', handleKeyDown);
     // Prevent background scroll
@@ -25,7 +35,7 @@ const Modal: React.FC<ModalProps> = ({ open, artwork, onClose }) => {
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = originalOverflow;
     };
-  }, [open, onClose]);
+  }, [open, onClose, onPrev, onNext]);
 
   if (!open) return null;
 
