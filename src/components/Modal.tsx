@@ -10,13 +10,13 @@ interface ModalProps {
   onNext?: () => void;
 }
 
-const Modal: React.FC<ModalProps> = ({
+export const Modal = ({
   open,
   artwork,
   onClose,
   onPrev,
   onNext,
-}) => {
+}: ModalProps) => {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   // Close modal on ESC key
@@ -77,5 +77,3 @@ const Modal: React.FC<ModalProps> = ({
     </div>
   );
 };
-
-export default Modal;

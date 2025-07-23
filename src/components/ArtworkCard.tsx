@@ -6,7 +6,7 @@ interface ArtworkCardProps {
   onClick?: () => void;
 }
 
-export function ArtworkCard({ artwork, onClick }: ArtworkCardProps) {
+export const ArtworkCard = ({ artwork, onClick }: ArtworkCardProps) => {
   return (
     <motion.button
       className="relative rounded-sm overflow-hidden shadow-lg cursor-pointer"
@@ -49,4 +49,4 @@ export function ArtworkCard({ artwork, onClick }: ArtworkCardProps) {
       </motion.div>
     </motion.button>
   );
-}
+};
