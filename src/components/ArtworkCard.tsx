@@ -34,6 +34,7 @@ export const ArtworkCard = ({ artwork, onClick }: ArtworkCardProps) => {
         alt={artwork.title}
         className="w-full h-auto object-cover"
         loading="lazy"
+        height={artwork.height}
       />
 
       {/* Overlay with artwork info */}
