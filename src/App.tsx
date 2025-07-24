@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { Masonry } from './components/Masonry';
 import { ScrollProgressBar } from './components/ScrollProgressBar';
 
-function App() {
+export const App = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       <ScrollProgressBar />
@@ -34,6 +34,4 @@ function App() {
       </main>
     </div>
   );
-}
-
-export default App;
+};

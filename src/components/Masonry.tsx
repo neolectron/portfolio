@@ -160,10 +160,10 @@ const ALL_ARTWORKS: Artwork[] = [
 export function Masonry() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  const handleOpen = (artwork: Artwork) => {
+  const handleOpen = useCallback((artwork: Artwork) => {
     const idx = ALL_ARTWORKS.findIndex((a) => a.src === artwork.src);
     setSelectedIndex(idx === -1 ? 0 : idx);
-  };
+  }, []);
 
   const handleClose = () => setSelectedIndex(null);
 

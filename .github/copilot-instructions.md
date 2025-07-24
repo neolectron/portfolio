@@ -12,6 +12,8 @@ When using static TSX, the React component does not accept any props and everyth
 DON'T assume that the component can get any data from outside, all required data should be included in your generated code.
 Rather than defining data as separate variables, we prefer to inline it directly in the TSX code.
 Never mock or simulate API calls, loadings, or any other asynchronous operations.
+Always using descruturing when importing React components and hooks, such as `import { useState } from 'react';`.
+Always use arrow functions for React components, such as `export const MyComponent = () => { ... }`.
 
 ## JavaScript Requirements
 
